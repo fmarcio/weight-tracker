@@ -1,6 +1,10 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ==============================================================================
+# .gitignore - Security & Build Output Exclusions
+# ==============================================================================
 
-# dependencies
+# ------------------------------------------------------------------------------
+# Dependencies
+# ------------------------------------------------------------------------------
 /node_modules
 /.pnp
 .pnp.*
@@ -10,32 +14,45 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
+# ------------------------------------------------------------------------------
+# Next.js Build Outputs
+# ------------------------------------------------------------------------------
 /.next/
 /out/
-
-# production
 /build
 
-# misc
+# ------------------------------------------------------------------------------
+# SECURITY: Environment Variables & Private Secrets
+# ------------------------------------------------------------------------------
+# NEVER commit files containing API keys, database credentials, or secret keys!
+.env*
+!.env.example
+
+# Service account private keys or credentials (e.g. Firebase Admin keys)
+*.pem
+*.key
+*.json
+!package*.json
+!tsconfig*.json
+!eslint*.json
+
+# ------------------------------------------------------------------------------
+# IDE & OS Garbage
+# ------------------------------------------------------------------------------
 .DS_Store
 *.pem
+.vscode/
+.idea/
 
-# debug
+# Debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
+# Vercel Deployment folder
 .vercel
 
-# typescript
+# TypeScript build info
 *.tsbuildinfo
 next-env.d.ts

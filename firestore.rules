@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null && request.auth.uid != null;
+    }
+
+    function isOwner() {
+      return isAuthenticated() && 
+        resource != null && 
+        resource.data.userId == request.auth.uid;
+    }
+
+    function isValidWeightLog() {
+      let data = request.resource.data;
+      return data.keys().hasOnly([
+               'weight',
+               'date',
+               'didExercise',
+               'exerciseDetails',
+               'userId',
+               'userEmail',
+               'createdAt',
+               'updatedAt'
+             ]) &&
+             data.weight is number && 
+             data.weight >= 10 && 
+             data.weight <= 500 &&
+             data.date is string && 
+             data.date.matches('^\\d{4}-\\d{2}-\\d{2}$') &&
+             data.userId is string &&
+             data.userId == request.auth.uid &&
+             (!('didExercise' in data) || data.didExercise is bool) &&
+             (!('userEmail' in data) || data.userEmail == null || (data.userEmail is string && data.userEmail.size() <= 100)) &&
+             (!('exerciseDetails' in data) || (data.exerciseDetails is string && data.exerciseDetails.size() <= 500));
+    }
+
+    match /weight_logs/{logId} {
+      allow read: if isOwner();
+
+      allow create: if isAuthenticated() && isValidWeightLog();
+
+      allow update: if isOwner() &&
+                    isValidWeightLog() &&
+                    request.resource.data.createdAt == resource.data.createdAt;
+
+      allow delete: if isOwner();
+    }
+  }
+}
