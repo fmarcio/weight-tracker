@@ -4,11 +4,13 @@
 :root {
   --background: #ffffff;
   --foreground: #191919;
+  color-scheme: light;
 }
 
 .dark {
   --background: #191919;
   --foreground: #f5f5f5;
+  color-scheme: dark;
 }
 
 @theme inline {
