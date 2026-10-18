@@ -2,6 +2,8 @@
 
 A full-stack web application for tracking daily weight measurements, physical activity habits, and long-term progression.
 
+Live App: [https://weight-tracker-psi-six.vercel.app/](https://weight-tracker-psi-six.vercel.app/)
+
 ![Weight Tracker Showcase](./public/demo.gif)
 
 ## Tech Stack
